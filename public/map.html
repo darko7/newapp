@@ -104,7 +104,13 @@
                 center: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
                 zoom: 18
               });
+              var marker = new google.maps.Marker({
+                position: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
+                map: map
+                //title: 'Hello World!'
+              });
             }
+
 
 
   })
