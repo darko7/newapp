@@ -25,6 +25,10 @@ body {
   color:white;
 
 }
+#weather{
+  color: #00CCFF;
+ font-size: 200px;
+}
 /*.nav{
   background-color: red
 }*/
