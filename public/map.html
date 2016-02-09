@@ -61,17 +61,54 @@
                             <button class="btn btn-primary" id="findMyPostCode" type="button">Find Place</button>
                         </span>
                       </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 col-lg-offset-4" style="padding:30px" id="neighborhood"></div>
 
-                  <div id="map" class="col-lg-6 col-lg-offset-3 "></div>
+                    </div>
+                  <div class="col-lg-6 col-lg-offset-4" style="padding:20px"></div>
+                  <div class="col-lg-6 col-lg-offset-4 success fail fail2"></div>
+                  <div class="col-lg-6 col-lg-offset-4" id="neighborhood"></div>
+                  <div id="map" class="col-lg-6 col-lg-offset-4 "></div>
+                  </div>
+
     </div>
 
 
   </body>
 
   <script>
+    $('#addressSearch').keypress( function(event) {
+      if(event.which === 13) {
+      var x,y;
+      var map;
+    $.ajax({
+      type:'GET',
+      //url: 'https://maps.googleapis.com/maps/api/geocode/xml?address=' + encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+      url: 'https://maps.googleapis.com/maps/api/geocode/json?address='+ encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+      dataType:'json',
+      success : initMap
+    });
+
+            function initMap(xml) {
+              console.log(xml)
+         if(xml.results[0] === undefined || xml.results[0] === undefined) {
+          $('#neighborhood').html('')
+          $('.fail2').html('<div class="  alert alert-danger fail">Could not find that address !!!</div>')
+             } else {
+              $('.fail2').html('')
+          $('#neighborhood').html('<div class=""><h2 >Neighborhood: '+xml.results[0].address_components[2].long_name +'</h2></div>')
+              map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
+                zoom: 14
+              });
+              var marker = new google.maps.Marker({
+                position: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
+                map: map
+                //title: 'Hello World!'
+              });
+              }
+            }
+          }
+  })
+
   $('#findMyPostCode').on('click', function(event) {
       var x,y;
       var map;
@@ -86,24 +123,23 @@
             function initMap(xml) {
               console.log(xml)
          if(xml.results[0] === undefined || xml.results[0] === undefined) {
-          $('#map').html('<div class="row col-lg-6 col-lg-offset-4  alert alert-danger fail">Could not find that address !!!</div>')
-             }
-          $('#neighborhood').html('<div class="row col-lg-6 col-lg-offset-4">Neighborhood: '+xml.results[0].address_components[2].long_name +'</div>')
+          $('#neighborhood').html('')
+          $('.fail2').html('<div class="  alert alert-danger fail">Could not find that address !!!</div>')
+             } else {
+              $('.fail2').html('')
+          $('#neighborhood').html('<div class=""><h2 >Neighborhood: '+xml.results[0].address_components[2].long_name +'</h2></div>')
               map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
-                zoom: 18
+                zoom: 14
               });
               var marker = new google.maps.Marker({
                 position: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
                 map: map
                 //title: 'Hello World!'
               });
+              }
             }
-
-
-
   })
-//AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
   </script>
 
 

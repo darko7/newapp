@@ -67,6 +67,52 @@
   //var Firebase = require("firebase");
   var myFirebaseRef = new Firebase("https://boiling-inferno-5585.firebaseio.com/");
 
+  $('#addressSearch').keypress( function(event) {
+    if(event.which === 13) {
+
+    event.preventDefault();
+    var result = false;
+
+    $.ajax({
+      type:'GET',
+      url: 'https://maps.googleapis.com/maps/api/geocode/xml?address=' + encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+      dataType:'xml',
+      success : processXML,
+      error : error
+    });
+
+      function error() {
+        $('.success').html('<div class="row col-lg-6 col-lg-offset-4 alert alert-info success alert alert-danger fail2">Could not connect to the Server</div>');
+      }
+
+
+    function processXML(xml) {
+      // myFirebaseRef.set({
+      //   address: $('#addressSearch').val(),
+      //   Zipcode :  $(xml).find("address_component").each(function(event){})$(xml).find('long_name').text()
+      // });
+      $(xml).find("address_component").each(function(event) {
+
+        if($(this).find('type').text() === 'postal_code') {
+          //console.log($(this).find('long_name'))
+           myFirebaseRef.push({
+            address: $('#addressSearch').val(),
+            Zipcode :  $(this).find('long_name').text()
+            });
+          $('.success').html('<div class=" row col-lg-6 col-lg-offset-4 alert alert-info success">The Zip Code you looking for is: <span style="font-weight: bold">' +
+          $(this).find('long_name').text() + '</span></div>' );
+          $('#addressSearch').html('');
+          result = true;
+        }
+      })
+    }
+
+    if(!result) {
+      $('.success').html('<div class="row col-lg-6 col-lg-offset-4  alert alert-danger fail">Could not find Zip Code for that address</div>')
+    }
+  }
+  })
+
   $('#findMyPostCode').on('click', function(event) {
 
 
