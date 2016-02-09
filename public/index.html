@@ -34,8 +34,8 @@
                 <ul class="nav navbar-nav">
                   <li class="active"><a href="#">Postcode</a></li>
             <!--  <li><a href="#">Postcode</a></li> -->
+                  <li><a href="map.html">Map</a></li>
                   <li><a href="#">Weather</a></li>
-                  <li><a href="#">Map</a></li>
                 </ul>
               </div>
             </nav>
@@ -56,19 +56,20 @@
 
 
                 </div>
+                <div class="col-lg-6 col-lg-offset-4" style="padding:20px"></div>
+                <div class="success fail fail2"></div>
               </div>
 
+              <!-- <div class="row col-lg-6 col-lg-offset-4 alert">
 
-              <div class="row col-lg-6 col-lg-offset-4 alert">
-
-                  <div class="alert alert-info success">The Post Code you looking for is </div>
+                  <div class="col-lg-6 col-lg-offset-4 alert alert-info success">The Post Code you looking for is </div>
 
                   <div class="alert alert-danger fail">Could not find Post Code for that address</div>
 
                   <div class="alert alert-danger fail2">Could not connect to the Server</div>
 
 
-              </div>
+              </div> -->
     </div>
 
   </body>
@@ -78,8 +79,8 @@
 
   $('#findMyPostCode').on('click', function(event) {
 
-    var result = 0;
     event.preventDefault();
+    var result = 0;
 
     $.ajax({
       type:'GET',
@@ -90,17 +91,18 @@
     });
 
       function error() {
-        $('.fail2').fadeIn();
+        $('.success').html('<div class="row col-lg-6 col-lg-offset-4 alert alert-info success alert alert-danger fail2">Could not connect to the Server</div>');
       }
 
 
     function processXML(xml) {
-      $(xml).find("address_component").each(function() {
+      $(xml).find("address_component").each(function(event) {
+//event.preventDefault();
+
         if($(this).find('type').text() === 'postal_code') {
 
-          $('.success').html('The Post Code you need is '+
-          $(this).find('long_name').text()).fadeIn();
-
+          $('.success').html('<div class=" row col-lg-6 col-lg-offset-4 alert alert-info success">The Post Code you looking for is ' +
+          $(this).find('long_name').text() + '</div>' );
           result = 1;
         }
       })
@@ -108,7 +110,7 @@
     }
 
     if(result === 0) {
-      $('.fail').fadeIn();
+      $('.success').html('<div class="row col-lg-6 col-lg-offset-4  alert alert-danger fail">Could not find Post Code for that address</div>')
     }
   })
 //AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
