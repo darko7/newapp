@@ -46,19 +46,19 @@
                     <ul class="nav navbar-nav">
                       <li ><a href="index.html">Zipcode</a></li>
                 <!--  <li><a href="#">Postcode</a></li> -->
-                      <li class="active"><a href="#">Map</a></li>
-                      <li><a href="weather.html">Weather</a></li>
+                      <li ><a href="map.html">Map</a></li>
+                      <li class="active"><a href="#">Weather</a></li>
                     </ul>
                     </div>
                   </nav>
 
                   <div class="row">
                     <div class="col-lg-6 col-lg-offset-4 center whiteBackround">
-                    <h3 class="enter ">Enter any address to find on the Map.</h3>
+                    <h3 class="enter ">Enter any City name to check the Weather.</h3>
                       <div class="input-group input-group-lg">
-                        <input type="text" class="form-control input-group-lg" id='addressSearch' placeholder="eg.611 Mission str. San Francisco CA"/>
+                        <input type="text" class="form-control input-group-lg" id='addressSearch' placeholder="eg.San Francisco, Skopje"/>
                         <span class="input-group-btn">
-                            <button class="btn btn-primary" id="findMyPostCode" type="button">Find Place</button>
+                            <button class="btn btn-primary" id="findMyPostCode" type="button">Find Out</button>
                         </span>
                       </div>
                     </div>
@@ -78,44 +78,61 @@
     $.ajax({
       type:'GET',
       //url: 'https://maps.googleapis.com/maps/api/geocode/xml?address=' + encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
-      url: 'https://maps.googleapis.com/maps/api/geocode/json?address='+ encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+      //url: 'https://maps.googleapis.com/maps/api/geocode/json?address='+ encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+      //url: 'http://api.openweathermap.org/data/2.5/forecast/'+ encodeURIComponent($('#addressSearch').val()) +'&APPID=0dbb335aea078cf755f4e488ca20c619',
+      //url: 'http://api.openweathermap.org/data/2.5/forecast/'+ encodeURIComponent($('#addressSearch').val()) + '?id=524901&APPID=0dbb335aea078cf755f4e488ca20c619',
+      // url: 'http://api.openweathermap.org/data/2.5/weather?q=Skopje&APPID=834fdef095321325b6eacc0395e23a2e',
+      url: 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22nome%2C%20ak%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys',
       dataType:'json',
       success : initMap
     });
 
-    function processXML(xml) {
-      console.log(xml.results[0].geometry.location.lat);
-      console.log(xml.results[0].geometry.location.lng);
-     // if(xml.results)
-    // x = xml.results[0].geometry.location.lat;
-     //y = xml.results[0].geometry.location.lng;
-      // $(xml).find("address_component").each(function() {
-      //   console.log(xml);
-      //   if($(this).find('type').text() === 'postal_code') {
-      //      x = $(this).find('long_name').text();
-      //   }
-      // })
+    // function processXML(xml) {
+    //   console.log(xml.results[0].geometry.location.lat);
+    //   console.log(xml.results[0].geometry.location.lng);
+    //  // if(xml.results)
+    // // x = xml.results[0].geometry.location.lat;
+    //  //y = xml.results[0].geometry.location.lng;
+    //   // $(xml).find("address_component").each(function() {
+    //   //   console.log(xml);
+    //   //   if($(this).find('type').text() === 'postal_code') {
+    //   //      x = $(this).find('long_name').text();
+    //   //   }
+    //   // })
 
-    }
-
+    // }
+var callbackFunction = function(data) {
+    var wind = data.query.results.channel;
+    console.log(wind.chill);
+  };
 
             function initMap(xml) {
-              map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
-                zoom: 18
-              });
-              var marker = new google.maps.Marker({
-                position: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
-                map: map
-                //title: 'Hello World!'
-              });
+              // map = new google.maps.Map(document.getElementById('map'), {
+              //   center: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
+              //   zoom: 18
+              // });
+              // var marker = new google.maps.Marker({
+              //   position: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
+              //   map: map
+              //   //title: 'Hello World!'
+              // });
+            console.log(xml);
             }
 
 
 
+callbackFunction()
   })
 //AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
   </script>
+<script>
+  var callbackFunction = function(data) {
+    var wind = data.query.results.channel.wind;
+    console.log(wind.chill);
+  };
+</script>
+
+<script src="https://query.yahooapis.com/v1/public/yql?q=select wind from weather.forecast where woeid in (select woeid from geo.places(1) where text='chicago, il')&format=json&callback=callbackFunction"></script>
 
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY">
