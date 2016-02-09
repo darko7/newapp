@@ -73,20 +73,26 @@
   </body>
 
   <script>
+            $('#addressSearch').keypress( function(event) {
+              if(event.which === 13) {
+                    $.ajax({
+                      type:'GET',
+                      url:'http://api.wunderground.com/api/bc268265c5acc268/conditions/q/CA/'+ encodeURIComponent($('#addressSearch').val()) +'.json',
+                      dataType:'json',
+                      success : function(data) {
+                        $('#weather').html('<h1 id="weather">'+data.current_observation.dewpoint_f + '*f ' + data.current_observation.dewpoint_c+'*c</h1>');
+                       }
+                  });
+                  }
+                  });
+
+
         $('#findMyPostCode').on('click', function(event) {
           $.ajax({
             type:'GET',
-            // url:'http://api.openweathermap.org/data/2.5/weather?q='+ encodeURIComponent($('#addressSearch').val()) +'&APPID=d8337210f6924f2aa2f875e174be290a',
-            // url:'http://query.yahooapis.com/v1/public/yql?q=select%20item%20from%20weather.forecast%20where%20location%3D%2248907%22&format=json',
             url:'http://api.wunderground.com/api/bc268265c5acc268/conditions/q/CA/'+ encodeURIComponent($('#addressSearch').val()) +'.json',
-            // url:'http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=d8337210f6924f2aa2f875e174be290a',
-            // url: 'http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=d8337210f6924f2aa2f875e174be290a',
-            // url: 'http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=d8337210f6924f2aa2f875e174be290a',
             dataType:'json',
-
             success : function(data) {
-             //  console.log(data.cod);
-             // if(data.cod === 404){
               $('#weather').html('<h1 id="weather">'+data.current_observation.dewpoint_f + '*f ' + data.current_observation.dewpoint_c+'*c</h1>');
              }
         });
