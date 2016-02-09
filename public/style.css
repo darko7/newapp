@@ -5,19 +5,26 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+    font-family:'Verdana','Courier New';
 }
 
 .success{
+    font-family:'Verdana','Courier New';
   padding-bottom: 30px;
 }
 .enter{
-  font-family: Verdana;
+    font-family:'Verdana','Courier New';
   color:white;
 }
 .container-fluid{
   background-color: #006399;
 }
 
+#neighborhood{
+    font-family: Verdana;
+  color:white;
+  font-size: 20px;
+}
 /*.nav{
   background-color: red
 }*/

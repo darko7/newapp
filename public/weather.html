@@ -72,74 +72,18 @@
   </body>
 
   <script>
-  $('#findMyPostCode').on('click', function(event) {
-      var x,y;
-      var map;
-    $.ajax({
-      type:'GET',
-      //url: 'https://maps.googleapis.com/maps/api/geocode/xml?address=' + encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
-      //url: 'https://maps.googleapis.com/maps/api/geocode/json?address='+ encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
-      //url: 'http://api.openweathermap.org/data/2.5/forecast/'+ encodeURIComponent($('#addressSearch').val()) +'&APPID=0dbb335aea078cf755f4e488ca20c619',
-      //url: 'http://api.openweathermap.org/data/2.5/forecast/'+ encodeURIComponent($('#addressSearch').val()) + '?id=524901&APPID=0dbb335aea078cf755f4e488ca20c619',
-      // url: 'http://api.openweathermap.org/data/2.5/weather?q=Skopje&APPID=834fdef095321325b6eacc0395e23a2e',
-      url: 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22nome%2C%20ak%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys',
-      dataType:'json',
-      success : initMap
-    });
-
-    // function processXML(xml) {
-    //   console.log(xml.results[0].geometry.location.lat);
-    //   console.log(xml.results[0].geometry.location.lng);
-    //  // if(xml.results)
-    // // x = xml.results[0].geometry.location.lat;
-    //  //y = xml.results[0].geometry.location.lng;
-    //   // $(xml).find("address_component").each(function() {
-    //   //   console.log(xml);
-    //   //   if($(this).find('type').text() === 'postal_code') {
-    //   //      x = $(this).find('long_name').text();
-    //   //   }
-    //   // })
-
-    // }
-var callbackFunction = function(data) {
-    var wind = data.query.results.channel;
-    console.log(wind.chill);
-  };
-
-            function initMap(xml) {
-              // map = new google.maps.Map(document.getElementById('map'), {
-              //   center: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
-              //   zoom: 18
-              // });
-              // var marker = new google.maps.Marker({
-              //   position: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
-              //   map: map
-              //   //title: 'Hello World!'
-              // });
-            console.log(xml);
+        $('#findMyPostCode').on('click', function(event) {
+          $.ajax({
+            type:'GET',
+            url: 'http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=d8337210f6924f2aa2f875e174be290a',
+            dataType:'json',
+            success : function(data) {
+              console.log(data)
             }
+          })
+        });
 
-
-
-callbackFunction()
-  })
-//AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
   </script>
-<script>
-  var callbackFunction = function(data) {
-    var wind = data.query.results.channel.wind;
-    console.log(wind.chill);
-  };
-</script>
-
-<script src="https://query.yahooapis.com/v1/public/yql?q=select wind from weather.forecast where woeid in (select woeid from geo.places(1) where text='chicago, il')&format=json&callback=callbackFunction"></script>
-
-
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY">
-//&callback=initMap
-  </script>
-
-
 </html>
 
 

@@ -75,12 +75,12 @@
   </body>
   <script>
 
-    //$('.alert').hide();
+    //$('.success').hide();
 
   $('#findMyPostCode').on('click', function(event) {
 
     event.preventDefault();
-    var result = 0;
+    var result = false;
 
     $.ajax({
       type:'GET',
@@ -97,20 +97,19 @@
 
     function processXML(xml) {
       $(xml).find("address_component").each(function(event) {
-//event.preventDefault();
 
         if($(this).find('type').text() === 'postal_code') {
 
-          $('.success').html('<div class=" row col-lg-6 col-lg-offset-4 alert alert-info success">The Post Code you looking for is ' +
-          $(this).find('long_name').text() + '</div>' );
-          result = 1;
+          $('.success').html('<div class=" row col-lg-6 col-lg-offset-4 alert alert-info success">The Zip Code you looking for is: <span style="font-weight: bold">' +
+          $(this).find('long_name').text() + '</span></div>' );
+          result = true;
         }
       })
       //console.log($(xml).find('status').text());
     }
 
-    if(result === 0) {
-      $('.success').html('<div class="row col-lg-6 col-lg-offset-4  alert alert-danger fail">Could not find Post Code for that address</div>')
+    if(!result) {
+      $('.success').html('<div class="row col-lg-6 col-lg-offset-4  alert alert-danger fail">Could not find Zip Code for that address</div>')
     }
   })
 //AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
