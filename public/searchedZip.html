@@ -43,27 +43,8 @@
 
               <div class="row">
                 <div class="col-lg-6 col-lg-offset-4 center whiteBackround">
-                    <h3 class="enter ">The address you searched before:</h3>
-                  <!-- <div class="input-group input-group-lg">
-                    <input type="text" id="addressSearch" class="form-control input-group-lg" placeholder="eg.611 Mission str. San Francisco CA"/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" id="findMyPostCode" type="button">Find Zip Code</button>
-                    </span>
-
-                  </div> -->
+                    <h3 class="enter ">The addresses searched before:</h3>
                   <div class="list-group lista">
-                    <!-- <a href="#" class="list-group-item ">
-                      <h4 class="list-group-item-heading"></h4>
-                      <p class="list-group-item-text">List Group Item Text</p>
-                    </a>
-                    <a href="#" class="list-group-item">
-                      <h4 class="list-group-item-heading">Second List Group Item Heading</h4>
-                      <p class="list-group-item-text">List Group Item Text</p>
-                    </a>
-                    <a href="#" class="list-group-item">
-                      <h4 class="list-group-item-heading">Third List Group Item Heading</h4>
-                      <p class="list-group-item-text">List Group Item Text</p>
-                    </a> -->
                   </div>
 
 
@@ -86,43 +67,7 @@
         console.log("The read failed: " + errorObject.code);
       });
 
-  // $('#findMyPostCode').on('click', function(event) {
 
-  //   event.preventDefault();
-  //   var result = false;
-
-  //   $.ajax({
-  //     type:'GET',
-  //     url: 'https://maps.googleapis.com/maps/api/geocode/xml?address=' + encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
-  //     dataType:'xml',
-  //     success : processXML,
-  //     error : error
-  //   });
-
-  //     function error() {
-  //       $('.success').html('<div class="row col-lg-6 col-lg-offset-4 alert alert-info success alert alert-danger fail2">Could not connect to the Server</div>');
-  //     }
-
-
-  //   function processXML(xml) {
-  //     $(xml).find("address_component").each(function(event) {
-
-  //       if($(this).find('type').text() === 'postal_code') {
-
-  //         $('.success').html('<div class=" row col-lg-6 col-lg-offset-4 alert alert-info success">The Zip Code you looking for is: <span style="font-weight: bold">' +
-  //         $(this).find('long_name').text() + '</span></div>' );
-  //         result = true;
-  //       }
-  //     })
-  //   }
-
-  //   if(!result) {
-  //     $('.success').html('<div class="row col-lg-6 col-lg-offset-4  alert alert-danger fail">Could not find Zip Code for that address</div>')
-  //   }
-  // })
-//AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
-
-////AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM(my api second)
   </script>
 
 
