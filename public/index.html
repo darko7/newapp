@@ -14,16 +14,12 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
   </head>
 
   <body>
     <div class="container">
-
-      <!-- <div class="input-group input-group-lg">
-        <span class="input-group-addon" id="sizing-addon1"></span>
-        <input type="text" class="form-control" placeholder="Address" aria-describedby="sizing-addon1">
-      </div> -->
-
 
             <nav class="navbar navbar-inverse">
               <div class="container-fluid">
@@ -36,6 +32,9 @@
             <!--  <li><a href="#">Postcode</a></li> -->
                   <li><a href="map.html">Map</a></li>
                   <li><a href="weather.html">Weather</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="searchedZip.html">Searched History</a></li>
                 </ul>
               </div>
             </nav>
@@ -60,24 +59,16 @@
                 <div class="success fail fail2"></div>
               </div>
 
-              <!-- <div class="row col-lg-6 col-lg-offset-4 alert">
-
-                  <div class="col-lg-6 col-lg-offset-4 alert alert-info success">The Post Code you looking for is </div>
-
-                  <div class="alert alert-danger fail">Could not find Post Code for that address</div>
-
-                  <div class="alert alert-danger fail2">Could not connect to the Server</div>
-
-
-              </div> -->
     </div>
 
   </body>
   <script>
 
-    //$('.success').hide();
+  //var Firebase = require("firebase");
+  var myFirebaseRef = new Firebase("https://boiling-inferno-5585.firebaseio.com/");
 
   $('#findMyPostCode').on('click', function(event) {
+
 
     event.preventDefault();
     var result = false;
@@ -96,16 +87,24 @@
 
 
     function processXML(xml) {
+      // myFirebaseRef.set({
+      //   address: $('#addressSearch').val(),
+      //   Zipcode :  $(xml).find("address_component").each(function(event){})$(xml).find('long_name').text()
+      // });
       $(xml).find("address_component").each(function(event) {
 
         if($(this).find('type').text() === 'postal_code') {
-
+          //console.log($(this).find('long_name'))
+           myFirebaseRef.push({
+            address: $('#addressSearch').val(),
+            Zipcode :  $(this).find('long_name').text()
+            });
           $('.success').html('<div class=" row col-lg-6 col-lg-offset-4 alert alert-info success">The Zip Code you looking for is: <span style="font-weight: bold">' +
           $(this).find('long_name').text() + '</span></div>' );
+          $('#addressSearch').html('');
           result = true;
         }
       })
-      //console.log($(xml).find('status').text());
     }
 
     if(!result) {

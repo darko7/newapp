@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MVP</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+
+            <nav class="navbar navbar-inverse">
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <a class="navbar-brand" href="#">MVP</a>
+                </div>
+
+                <ul class="nav navbar-nav">
+                  <li ><a href="index.html">Zipcode</a></li>
+            <!--  <li><a href="#">Postcode</a></li> -->
+                  <li><a href="map.html">Map</a></li>
+                  <li><a href="weather.html">Weather</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li class="active"><a href="searchedZip.html">Searched History</a></li>
+                </ul>
+              </div>
+            </nav>
+
+
+
+
+              <div class="row">
+                <div class="col-lg-6 col-lg-offset-4 center whiteBackround">
+                    <h3 class="enter ">The address you searched before:</h3>
+                  <!-- <div class="input-group input-group-lg">
+                    <input type="text" id="addressSearch" class="form-control input-group-lg" placeholder="eg.611 Mission str. San Francisco CA"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="findMyPostCode" type="button">Find Zip Code</button>
+                    </span>
+
+                  </div> -->
+                  <div class="list-group lista">
+                    <!-- <a href="#" class="list-group-item ">
+                      <h4 class="list-group-item-heading"></h4>
+                      <p class="list-group-item-text">List Group Item Text</p>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <h4 class="list-group-item-heading">Second List Group Item Heading</h4>
+                      <p class="list-group-item-text">List Group Item Text</p>
+                    </a>
+                    <a href="#" class="list-group-item">
+                      <h4 class="list-group-item-heading">Third List Group Item Heading</h4>
+                      <p class="list-group-item-text">List Group Item Text</p>
+                    </a> -->
+                  </div>
+
+
+                </div>
+                <div class="col-lg-6 col-lg-offset-4" style="padding:20px"></div>
+                <div class="success fail fail2"></div>
+              </div>
+
+    </div>
+
+  </body>
+  <script>
+      var ref = new Firebase("https://boiling-inferno-5585.firebaseio.com/");
+      ref.on("value", function(snapshot) {
+        console.log(snapshot.val())
+        for(var prop in snapshot.val()) {
+        $('.lista').prepend('<a href="#" class="list-group-item "><h4 class="list-group-item-heading">'+snapshot.val()[prop].address +'</h4><p class="list-group-item-text">'+ snapshot.val()[prop].Zipcode +'</p>')
+      }
+      }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+
+  // $('#findMyPostCode').on('click', function(event) {
+
+  //   event.preventDefault();
+  //   var result = false;
+
+  //   $.ajax({
+  //     type:'GET',
+  //     url: 'https://maps.googleapis.com/maps/api/geocode/xml?address=' + encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+  //     dataType:'xml',
+  //     success : processXML,
+  //     error : error
+  //   });
+
+  //     function error() {
+  //       $('.success').html('<div class="row col-lg-6 col-lg-offset-4 alert alert-info success alert alert-danger fail2">Could not connect to the Server</div>');
+  //     }
+
+
+  //   function processXML(xml) {
+  //     $(xml).find("address_component").each(function(event) {
+
+  //       if($(this).find('type').text() === 'postal_code') {
+
+  //         $('.success').html('<div class=" row col-lg-6 col-lg-offset-4 alert alert-info success">The Zip Code you looking for is: <span style="font-weight: bold">' +
+  //         $(this).find('long_name').text() + '</span></div>' );
+  //         result = true;
+  //       }
+  //     })
+  //   }
+
+  //   if(!result) {
+  //     $('.success').html('<div class="row col-lg-6 col-lg-offset-4  alert alert-danger fail">Could not find Zip Code for that address</div>')
+  //   }
+  // })
+//AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
+
+////AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM(my api second)
+  </script>
+
+
+</html>
+
+
+
+
+
+
+
+
+
