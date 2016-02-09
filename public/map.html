@@ -15,18 +15,18 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-    <script>
-      $.ajax({
-      type:'GET',
-      url: '//maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
-      dataType:'xml',
-      success : processXML
-    });
-    </script>
+     <script>
+    //   $.ajax({
+    //   type:'GET',
+    //   url: '//maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+    //   dataType:'xml',
+    //   success : processXML
+    // });
+    // </script>
 
       <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0; }
-      #map { height: 100%; }
+      #map { height: 400px; width: 700px; }
     </style>
   </head>
 
@@ -38,103 +38,85 @@
         <span class="input-group-addon" id="sizing-addon1"></span>
         <input type="text" class="form-control" placeholder="Address" aria-describedby="sizing-addon1">
       </div> -->
-            <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">MVP</a>
-          </div>
-          <ul class="nav navbar-nav">
-            <li ><a href="index.html">Postcode</a></li>
-           <!--  <li><a href="#">Postcode</a></li> -->
-            <li class="active"><a href="#">Map</a></li>
-            <li><a href="#">Weather</a></li>
-          </ul>
-        </div>
-      </nav>
+                  <nav class="navbar navbar-inverse naslov">
+                    <div class="container-fluid">
+                    <div class="navbar-header">
+                      <a class="navbar-brand" href="#">MVP</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                      <li ><a href="index.html">Postcode</a></li>
+                <!--  <li><a href="#">Postcode</a></li> -->
+                      <li class="active"><a href="#">Map</a></li>
+                      <li><a href="#">Weather</a></li>
+                    </ul>
+                    </div>
+                  </nav>
 
-      <div class="row">
-        <div class="col-lg-6 col-lg-offset-4 center whiteBackround">
-          <div class="input-group input-group-lg">
-            <input type="text" class="form-control input-group-lg" placeholder="eg.611 Mission street"/>
-            <span class="input-group-btn">
-                <button class="btn btn-primary" id="findMyPostCode" type="button">Find Post Code</button>
-            </span>
-          </div>
-        </div>
-      </div>
+                  <div class="row">
+                    <div class="col-lg-6 col-lg-offset-4 center whiteBackround">
+                    <h3 class="enter ">Enter any address to find on the Map.</h3>
+                      <div class="input-group input-group-lg">
+                        <input type="text" class="form-control input-group-lg" id='addressSearch' placeholder="eg.611 Mission str. San Francisco CA"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" id="findMyPostCode" type="button">Find Place</button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-lg-offset-4" style="padding:30px"></div>
 
-
+                  <div id="map" class="col-lg-6 col-lg-offset-3 "></div>
     </div>
-    <div id="map"></div>
-    <script type="text/javascript">
 
-var map;
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -34.397, lng: 150.644},
-    zoom: 8
-  });
-}
-
-    </script>
 
   </body>
 
   <script>
   $('#findMyPostCode').on('click', function(event) {
+      var x,y;
+      var map;
     $.ajax({
       type:'GET',
-      url: '//maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
-      dataType:'xml',
-      success : processXML
+      //url: 'https://maps.googleapis.com/maps/api/geocode/xml?address=' + encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+      url: 'https://maps.googleapis.com/maps/api/geocode/json?address='+ encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+      dataType:'json',
+      success : initMap
     });
 
     function processXML(xml) {
-      $(xml).find("address_component").each(function() {
-        if($(this).find('type').text() === 'postal_code') {
-          alert($(this).find('long_name').text());
-        }
-      })
+      console.log(xml.results[0].geometry.location.lat);
+      console.log(xml.results[0].geometry.location.lng);
+     // if(xml.results)
+    // x = xml.results[0].geometry.location.lat;
+     //y = xml.results[0].geometry.location.lng;
+      // $(xml).find("address_component").each(function() {
+      //   console.log(xml);
+      //   if($(this).find('type').text() === 'postal_code') {
+      //      x = $(this).find('long_name').text();
+      //   }
+      // })
+
     }
+
+
+            function initMap(xml) {
+              map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: xml.results[0].geometry.location.lat, lng: xml.results[0].geometry.location.lng},
+                zoom: 18
+              });
+            }
+
+
   })
 //AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
-
   </script>
-  <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY&callback=initMap">
-    </script>
+
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY">
+//&callback=initMap
+  </script>
 
 
 </html>
 
-
-<!--
-<!DOCTYPE html>
-<html>
-  <head>
-    <style type="text/css">
-      html, body { height: 100%; margin: 0; padding: 0; }
-      #map { height: 100%; }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script type="text/javascript">
-
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
-      }
-
-    </script>
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
-    </script>
-  </body>
-</html>
-
- -->
 

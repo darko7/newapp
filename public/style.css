@@ -14,7 +14,13 @@ body {
   font-family: Verdana;
   color:white;
 }
+.container-fluid{
+  background-color: #006399;
+}
 
+/*.nav{
+  background-color: red
+}*/
 /*.whiteBackround{
   background-color: white;
 }*/
