@@ -23,40 +23,97 @@
         <span class="input-group-addon" id="sizing-addon1"></span>
         <input type="text" class="form-control" placeholder="Address" aria-describedby="sizing-addon1">
       </div> -->
+
+
             <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">MVP</a>
-          </div>
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Postcode</a></li>
-           <!--  <li><a href="#">Postcode</a></li> -->
-            <li><a href="#">Weather</a></li>
-            <li><a href="#">Map</a></li>
-          </ul>
-        </div>
-      </nav>
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <a class="navbar-brand" href="#">MVP</a>
+                </div>
 
-      <div class="row">
-        <div class="col-lg-6 col-lg-offset-4 center whiteBackround">
-          <div class="input-group input-group-lg">
-            <input type="text" class="form-control input-group-lg" placeholder="eg.611 Mission street"/>
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="button">Find Post Code</button>
-            </span>
-          </div>
-        </div>
-      </div>
+                <ul class="nav navbar-nav">
+                  <li class="active"><a href="#">Postcode</a></li>
+            <!--  <li><a href="#">Postcode</a></li> -->
+                  <li><a href="#">Weather</a></li>
+                  <li><a href="#">Map</a></li>
+                </ul>
+              </div>
+            </nav>
 
 
+
+
+              <div class="row">
+                <div class="col-lg-6 col-lg-offset-4 center whiteBackround">
+                    <h3 class="enter ">Enter any address to find the Post Code.</h3>
+                  <div class="input-group input-group-lg">
+                    <input type="text" id="addressSearch" class="form-control input-group-lg" placeholder="eg.611 Mission str. San Francisco CA"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="findMyPostCode" type="button">Find Post Code</button>
+                    </span>
+
+                  </div>
+
+
+                </div>
+              </div>
+
+
+              <div class="row col-lg-6 col-lg-offset-4 alert">
+
+                  <div class="alert alert-info success">The Post Code you looking for is </div>
+
+                  <div class="alert alert-danger fail">Could not find Post Code for that address</div>
+
+                  <div class="alert alert-danger fail2">Could not connect to the Server</div>
+
+
+              </div>
     </div>
 
   </body>
   <script>
+
+    //$('.alert').hide();
+
   $('#findMyPostCode').on('click', function(event) {
 
-  })
+    var result = 0;
+    event.preventDefault();
 
+    $.ajax({
+      type:'GET',
+      url: 'https://maps.googleapis.com/maps/api/geocode/xml?address=' + encodeURIComponent($('#addressSearch').val()) + '&key=AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM',
+      dataType:'xml',
+      success : processXML,
+      error : error
+    });
+
+      function error() {
+        $('.fail2').fadeIn();
+      }
+
+
+    function processXML(xml) {
+      $(xml).find("address_component").each(function() {
+        if($(this).find('type').text() === 'postal_code') {
+
+          $('.success').html('The Post Code you need is '+
+          $(this).find('long_name').text()).fadeIn();
+
+          result = 1;
+        }
+      })
+      //console.log($(xml).find('status').text());
+    }
+
+    if(result === 0) {
+      $('.fail').fadeIn();
+    }
+  })
+//AIzaSyDTQ8dSbzBQz1-0fWiTuaSojJcLTyFTzKY (my api)
+
+////AIzaSyAuAr_BcaIyEWiEEOFl5icjgSVtNla-BFM(my api second)
   </script>
 
 
